@@ -86,6 +86,16 @@ SENTRY_USE_BIG_INTS = True
 # and thus various UI optimizations should be enabled.
 SENTRY_SINGLE_ORGANIZATION = env('SENTRY_SINGLE_ORGANIZATION', True)
 
+##############
+# SSO Plugin #
+##############
+
+INSTALLED_APPS += ('sentry_sso_google',)
+# These credentials have been rotated, and are updated manually after deployment.
+GOOGLE_OAUTH2_CLIENT_ID = '124925508285-5di8a9rn09epk1h63apvfrmgu6obs9oi.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = 'fzmAeQwqa6WfkJ1d8z42E0Oc'
+GOOGLE_WHITE_LISTED_DOMAINS = ['onefinestay.com']
+
 #########
 # Redis #
 #########
