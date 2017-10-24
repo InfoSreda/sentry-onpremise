@@ -17,7 +17,7 @@ services:
       SENTRY_SECRET_KEY: ${SENTRY_SECRET_KEY}
       SENTRY_MEMCACHED_HOST: memcached
       SENTRY_REDIS_HOST: redis
-      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_POSTGRES_DSN: ${SENTRY_POSTGRES_DSN}
       SENTRY_EMAIL_HOST: smtp
     volumes:
       - ./data/sentry:/var/lib/sentry/files
@@ -34,18 +34,11 @@ services:
     restart: unless-stopped
     image: redis:3.2-alpine
 
-  postgres:
-    restart: unless-stopped
-    image: postgres:9.5
-    volumes:
-      - ./data/postgres:/var/lib/postgresql/data
-
   web:
     restart: unless-stopped
     extends: base
     links:
       - redis
-      - postgres
       - memcached
       - smtp
     ports:
@@ -57,7 +50,6 @@ services:
     command: run cron
     links:
       - redis
-      - postgres
       - memcached
       - smtp
 
@@ -67,6 +59,5 @@ services:
     command: run worker
     links:
       - redis
-      - postgres
       - memcached
       - smtp
