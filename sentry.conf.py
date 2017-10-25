@@ -38,17 +38,38 @@ from sentry.conf.server import *  # NOQA
 import os
 import os.path
 
-import dj_database_url
-
 CONF_ROOT = os.path.dirname(__file__)
 
-dj_database_url.SCHEMES['sentry-pgsql'] = 'sentry.db.postgres'
-DB_CONFIG = dj_database_url.parse(
-    env('SENTRY_POSTGRES_DSN'), 'sentry-pgsql://postgres:@postgres:5432/postgres',
-)
-DB_CONFIG.setdefault('OPTIONS', {})
-DB_CONFIG['OPTIONS'].update({'autocommit': True})
-DATABASES = {'default': DB_CONFIG}
+postgres = env('SENTRY_POSTGRES_HOST') or (env('POSTGRES_PORT_5432_TCP_ADDR') and 'postgres')
+if postgres:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'sentry.db.postgres',
+            'NAME': (
+                env('SENTRY_DB_NAME')
+                or env('POSTGRES_ENV_POSTGRES_USER')
+                or 'postgres'
+            ),
+            'USER': (
+                env('SENTRY_DB_USER')
+                or env('POSTGRES_ENV_POSTGRES_USER')
+                or 'postgres'
+            ),
+            'PASSWORD': (
+                env('SENTRY_DB_PASSWORD')
+                or env('POSTGRES_ENV_POSTGRES_PASSWORD')
+                or ''
+            ),
+            'HOST': postgres,
+            'PORT': (
+                env('SENTRY_POSTGRES_PORT')
+                or ''
+            ),
+            'OPTIONS': {
+                'autocommit': True,
+            },
+        },
+    }
 
 # You should not change this setting after your database has been created
 # unless you have altered all schemas first
