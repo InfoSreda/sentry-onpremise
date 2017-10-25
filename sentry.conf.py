@@ -44,7 +44,7 @@ CONF_ROOT = os.path.dirname(__file__)
 
 dj_database_url.SCHEMES['sentry-pgsql'] = 'sentry.db.postgres'
 DB_CONFIG = dj_database_url.parse(
-    env('SENTRY_POSTGRES_DSN') or 'sentry-pgsql://postgres:@postgres:5432/postgres',
+    env('SENTRY_POSTGRES_DSN'), 'sentry-pgsql://postgres:@postgres:5432/postgres',
 )
 DB_CONFIG.setdefault('OPTIONS', {})
 DB_CONFIG['OPTIONS'].update({'autocommit': True})
@@ -71,8 +71,8 @@ SENTRY_SINGLE_ORGANIZATION = env('SENTRY_SINGLE_ORGANIZATION', True)
 
 INSTALLED_APPS += ('sentry_sso_google',)
 # These credentials have been rotated, and are updated manually after deployment.
-GOOGLE_OAUTH2_CLIENT_ID = '124925508285-5di8a9rn09epk1h63apvfrmgu6obs9oi.apps.googleusercontent.com'
-GOOGLE_OAUTH2_CLIENT_SECRET = 'fzmAeQwqa6WfkJ1d8z42E0Oc'
+GOOGLE_OAUTH2_CLIENT_ID = env('GOOGLE_OAUTH2_CLIENT_ID')
+GOOGLE_OAUTH2_CLIENT_SECRET = env('GOOGLE_OAUTH2_CLIENT_SECRET')
 GOOGLE_WHITE_LISTED_DOMAINS = ['onefinestay.com']
 
 #########
