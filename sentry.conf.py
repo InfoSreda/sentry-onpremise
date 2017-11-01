@@ -89,12 +89,8 @@ SENTRY_SINGLE_ORGANIZATION = env('SENTRY_SINGLE_ORGANIZATION', True)
 ##############
 # SSO Plugin #
 ##############
-
-INSTALLED_APPS += ('sentry_sso_google',)
-# These credentials have been rotated, and are updated manually after deployment.
-GOOGLE_OAUTH2_CLIENT_ID = env('GOOGLE_OAUTH2_CLIENT_ID')
-GOOGLE_OAUTH2_CLIENT_SECRET = env('GOOGLE_OAUTH2_CLIENT_SECRET')
-GOOGLE_WHITE_LISTED_DOMAINS = ['onefinestay.com']
+GOOGLE_CLIENT_ID = env('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = env('GOOGLE_CLIENT_SECRET')
 
 #########
 # Redis #
